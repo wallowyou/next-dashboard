@@ -1,10 +1,14 @@
 import { NextResponse } from 'next/server';
 import { MOCK_DB } from '@/app/lib/mock-data';
 
+/**
+ * 执行 ontology 动作的接口仅支持 POST。
+ * 请求体: { action: string, parameters: string | object }
+ */
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    
+    // console.log("请求体:", body);
     // 1. 解构出 action 和 parameters
     let { action, parameters } = body;
 
@@ -65,4 +69,15 @@ export async function POST(request: Request) {
     console.error("服务器内部错误:", e);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
+}
+
+/** 仅支持 POST，GET 返回 405 及正确用法说明 */
+export async function GET() {
+  return NextResponse.json(
+    {
+      error: 'Method Not Allowed',
+      message: '此接口仅支持 POST。请使用: POST /api/ontology/action/execute，请求体: { "action": "update_project_status", "parameters": "{\\"projectName\\": \\"Alpha\\", \\"newStatus\\": \\"Completed\\"}" }'
+    },
+    { status: 405 }
+  );
 }

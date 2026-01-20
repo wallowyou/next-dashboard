@@ -33,7 +33,7 @@
         }
       }
     },
-    "/api/action/execute": {
+    "/api/ontology/action/execute": {
       "post": {
         "operationId": "executeAction",
         "summary": "执行业务动作 (Runtime)",
