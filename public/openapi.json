@@ -1,0 +1,80 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "AIP Ontology API",
+    "description": "API for Dify Agent Integration",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "paths": {
+    "/api/ontology/schema": {
+      "get": {
+        "operationId": "getSchema",
+        "summary": "获取本体定义 (Design Time)",
+        "description": "获取当前系统中所有可用的对象、关系和动作定义。",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": { "type": "object" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/action/execute": {
+      "post": {
+        "operationId": "executeAction",
+        "summary": "执行业务动作 (Runtime)",
+        "description": "根据 Action 名称和参数执行具体的业务逻辑。",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "action": { 
+                    "type": "string", 
+                    "description": "要执行的动作名称，例如 get_project_status" 
+                  },
+                  "parameters": { 
+                    "type": "object",
+                    "description": "动作所需的参数对象"
+                  }
+                },
+                "required": ["action", "parameters"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Action executed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "result": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
