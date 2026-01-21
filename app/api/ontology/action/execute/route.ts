@@ -2,8 +2,32 @@ import { NextResponse } from 'next/server';
 import { MOCK_DB } from '@/app/lib/mock-data';
 
 /**
- * 执行 ontology 动作的接口仅支持 POST。
- * 请求体: { action: string, parameters: string | object }
+ * @swagger
+ * /api/ontology/action/execute:
+ *   post:
+ *     description: 执行ontology动作
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               action:
+ *                 type: string
+ *                 description: 动作名称
+ *               parameters:
+ *                 type: object
+ *                 description: 参数
+ *     responses:
+ *       200:
+ *         description: 成功返回执行结果
+ *       400:
+ *         description: 请求参数错误
+ *       404:
+ *         description: 项目未找到
+ *       500:
+ *         description: 服务器内部错误
  */
 export async function POST(request: Request) {
   try {
