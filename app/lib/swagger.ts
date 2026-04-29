@@ -1,6 +1,31 @@
-const defaultServerUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
+type OpenApiSpec = ReturnType<typeof createOpenApiSpec>;
 
-export function createOpenApiSpec(serverUrl = defaultServerUrl) {
+function normalizeServerUrl(url: string) {
+  return /^https?:\/\//.test(url) ? url : `https://${url}`;
+}
+
+export function getDefaultServerUrl() {
+  const serverUrl =
+    process.env.NEXT_PUBLIC_APP_URL ??
+    process.env.VERCEL_PROJECT_PRODUCTION_URL ??
+    process.env.VERCEL_URL ??
+    'http://localhost:3000';
+
+  return normalizeServerUrl(serverUrl);
+}
+
+export function withServerUrl(spec: OpenApiSpec, serverUrl: string) {
+  return {
+    ...spec,
+    servers: [
+      {
+        url: normalizeServerUrl(serverUrl),
+      },
+    ],
+  };
+}
+
+export function createOpenApiSpec(serverUrl = getDefaultServerUrl()) {
   return {
     openapi: '3.1.0',
     info: {
@@ -178,4 +203,4 @@ export function createOpenApiSpec(serverUrl = defaultServerUrl) {
   };
 }
 
-export const getApiDocs = async () => createOpenApiSpec();
+export const getApiDocs = async (serverUrl?: string) => createOpenApiSpec(serverUrl);
