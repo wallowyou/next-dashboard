@@ -1,12 +1,13 @@
 {
   "private": true,
   "scripts": {
-    "build": "next build",
+    "build": "pnpm run docs:gen && next build",
     "dev": "next dev --turbopack",
     "start": "next start",
     "lint": "eslint .",
     "i18n:check": "tsx ./scripts/check-i18n.js",
-    "i18n:gen": "tsx ./scripts/auto-gen-i18n.js"
+    "i18n:gen": "tsx ./scripts/auto-gen-i18n.js",
+    "docs:gen": "tsx ./scripts/generate-openapi.js"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",

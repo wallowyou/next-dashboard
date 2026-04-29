@@ -1,43 +1,23 @@
 {
-  "openapi": "3.1.0",
+  "openapi": "3.0.0",
   "info": {
-    "title": "AIP Ontology API",
-    "description": "API for Dify Agent Integration",
-    "version": "1.0.0"
+    "title": "Next.js API Documentation",
+    "version": "1.0"
   },
-  "servers": [
-    {
-      "url": "http://localhost:3000"
-    }
-  ],
-  "paths": {
-    "/api/ontology/schema": {
-      "get": {
-        "operationId": "getSchema",
-        "summary": "获取本体定义 (Design Time)",
-        "description": "获取当前系统中所有可用的对象、关系和动作定义。",
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": { "type": "object" }
-                  }
-                }
-              }
-            }
-          }
-        }
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
-    },
+    }
+  },
+  "security": [],
+  "paths": {
     "/api/ontology/action/execute": {
       "post": {
-        "operationId": "executeAction",
-        "summary": "执行业务动作 (Runtime)",
-        "description": "根据 Action 名称和参数执行具体的业务逻辑。",
+        "description": "执行ontology动作",
         "requestBody": {
           "required": true,
           "content": {
@@ -45,36 +25,45 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "action": { 
-                    "type": "string", 
-                    "description": "要执行的动作名称，例如 get_project_status" 
+                  "action": {
+                    "type": "string",
+                    "description": "动作名称"
                   },
-                  "parameters": { 
+                  "parameters": {
                     "type": "object",
-                    "description": "动作所需的参数对象"
+                    "description": "参数"
                   }
-                },
-                "required": ["action", "parameters"]
+                }
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Action executed successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "result": { "type": "string" }
-                  }
-                }
-              }
-            }
+            "description": "成功返回执行结果"
+          },
+          "400": {
+            "description": "请求参数错误"
+          },
+          "404": {
+            "description": "项目未找到"
+          },
+          "500": {
+            "description": "服务器内部错误"
+          }
+        }
+      }
+    },
+    "/api/ontology/schema": {
+      "get": {
+        "description": "获取ontology schema",
+        "responses": {
+          "200": {
+            "description": "成功返回ontology schema"
           }
         }
       }
     }
-  }
+  },
+  "tags": []
 }
